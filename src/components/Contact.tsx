@@ -3,9 +3,13 @@ import { useApp } from '../context';
 import { links } from '../content';
 import SectionHead from './SectionHead';
 
-type Status = 'idle' | 'sending' | 'ok' | 'error' | 'mailto';
+type Status = 'idle' | 'sending' | 'ok' | 'error' | 'inactive';
 
-const FORMSPREE_ID = import.meta.env.VITE_FORMSPREE_ID;
+// FormSubmit envía cada mensaje directo a tu correo, sin cuentas ni claves.
+// La primera vez llega un correo de activación ("Activate Form") que hay que aceptar una sola vez
+// por cada dominio (localhost, vercel.app, dominio propio).
+// Se envía desde el navegador porque FormSubmit está detrás de Cloudflare y bloquea servidores.
+const ENDPOINT = import.meta.env.VITE_CONTACT_ENDPOINT || `https://formsubmit.co/ajax/${links.email}`;
 
 export default function Contact() {
   const { t } = useApp();
@@ -16,28 +20,35 @@ export default function Contact() {
     e.preventDefault();
     const form = e.currentTarget;
     const data = new FormData(form);
-    const subject = String(data.get('subject') ?? '');
-    const email = String(data.get('email') ?? '');
-    const message = String(data.get('message') ?? '');
-
-    // Sin Formspree configurado: abrir el correo del visitante con todo prellenado.
-    if (!FORMSPREE_ID) {
-      const body = `${message}\n\n— ${email}`;
-      window.location.href = `mailto:${links.email}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(body)}`;
-      setStatus('mailto');
-      return;
-    }
+    if (String(data.get('_honey') ?? '')) return; // bot
+    const subject = String(data.get('subject') ?? '').trim();
+    const email = String(data.get('email') ?? '').trim();
+    const message = String(data.get('message') ?? '').trim();
 
     setStatus('sending');
     try {
-      const res = await fetch(`https://formspree.io/f/${FORMSPREE_ID}`, {
+      const res = await fetch(ENDPOINT, {
         method: 'POST',
-        headers: { Accept: 'application/json', 'Content-Type': 'application/json' },
-        body: JSON.stringify({ _subject: subject, subject, email, message }),
+        headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+        body: JSON.stringify({
+          _subject: `Portafolio · ${subject}`,
+          _template: 'table',
+          _captcha: 'false',
+          _replyto: email,
+          Asunto: subject,
+          Correo: email,
+          Mensaje: message,
+        }),
       });
-      if (!res.ok) throw new Error(String(res.status));
-      setStatus('ok');
-      form.reset();
+      const payload = (await res.json().catch(() => null)) as { success?: string | boolean; message?: string } | null;
+      const ok = payload?.success === true || payload?.success === 'true';
+      if (res.ok && ok) {
+        setStatus('ok');
+        form.reset();
+        return;
+      }
+      // Nunca fingimos éxito: distinguimos "falta activar" de un error genérico.
+      setStatus(/activat/i.test(payload?.message ?? '') ? 'inactive' : 'error');
     } catch {
       setStatus('error');
     }
@@ -79,6 +90,7 @@ export default function Contact() {
 
         <form className="card contact__form" onSubmit={onSubmit} data-reveal>
           <span className="label">{c.formTitle}</span>
+          <input type="text" name="_honey" tabIndex={-1} autoComplete="off" aria-hidden="true" className="sr-only" />
           <label className="field">
             <span>{c.subject}</span>
             <input name="subject" type="text" required maxLength={150} />
@@ -97,7 +109,7 @@ export default function Contact() {
           <p className={`form-status form-status--${status}`} role="status" aria-live="polite">
             {status === 'ok' && c.ok}
             {status === 'error' && c.error}
-            {status === 'mailto' && c.mailtoNote}
+            {status === 'inactive' && c.inactive}
           </p>
         </form>
       </div>
