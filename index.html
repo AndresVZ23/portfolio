@@ -1,0 +1,31 @@
+<!doctype html>
+<html lang="es" data-theme="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Abel Andrés Valle Zuta · Software Engineer · Co-founder & CTO de MyFix</title>
+    <meta name="description" content="Portafolio de Abel Andrés Valle Zuta: Software Engineer (UPC · FIU), Co-founder & CTO de MyFix. IA, agentes, automatización y cloud." />
+    <meta name="theme-color" content="#0B0C0F" />
+    <meta property="og:type" content="website" />
+    <meta property="og:title" content="Abel Andrés Valle Zuta · Software Engineer" />
+    <meta property="og:description" content="Software Engineer · Co-founder & CTO de MyFix. IA, agentes, automatización y cloud." />
+    <meta property="og:image" content="/og.jpg" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+    <script>
+      (function () {
+        try {
+          var saved = localStorage.getItem('av-theme');
+          var theme = saved || (window.matchMedia('(prefers-color-scheme: light)').matches ? 'light' : 'dark');
+          document.documentElement.setAttribute('data-theme', theme);
+          var lang = localStorage.getItem('av-lang');
+          if (lang) document.documentElement.setAttribute('lang', lang);
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html>
