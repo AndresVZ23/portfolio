@@ -34,29 +34,19 @@ Para agregar una imagen a un carrusel: copia el archivo a `src/assets/img/`, imp
 
 ## Formulario de contacto
 
-1. Crea un formulario gratis en [formspree.io](https://formspree.io).
-2. Copia el ID (lo que va después de `/f/` en la URL).
-3. Copia `.env.example` como `.env` y pon `VITE_FORMSPREE_ID=tu_id`.
-4. En Vercel/Netlify, agrega la misma variable en *Environment Variables*.
+Envía cada mensaje directo a **abelandresvallez@gmail.com** con [FormSubmit](https://formsubmit.co), sin cuentas ni claves.
 
-Sin ese ID el formulario igual funciona: abre la app de correo del visitante con el mensaje prellenado.
+- La **primera vez** que alguien escribe desde un dominio nuevo (localhost, `abelvalle.vercel.app`, dominio propio),
+  FormSubmit te manda un correo de activación: ábrelo y haz clic en **Activate Form** una sola vez.
+- Hasta entonces el formulario muestra "El buzón aún no está activado" (nunca finge éxito).
+- Para cambiar el correo de destino, edita `links.email` en `src/content.ts`.
 
-## Subirlo a GitHub
+## Código y publicación
 
-```bash
-git init
-git add .
-git commit -m "Portafolio v1"
-git branch -M main
-git remote add origin https://github.com/AndresVZ23/portfolio.git
-git push -u origin main
-```
+Repositorio: https://github.com/AndresVZ23/portfolio
 
-## Publicarlo
-
-**Vercel:** vercel.com → *Add New Project* → importa el repo → Vercel detecta Vite solo → *Deploy*.
-
-**Netlify:** netlify.com → *Add new site* → *Import from Git* → elige el repo (el archivo `netlify.toml` ya trae la configuración) → *Deploy*.
+Publicado en **Vercel** (https://abelvalle.vercel.app), conectado a este repositorio:
+cada cambio que subas a `main` se publica solo en uno o dos minutos.
 
 ## Detalles
 
