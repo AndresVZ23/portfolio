@@ -1284,8 +1284,8 @@
 .form-status--error {
   color: var(--red);
 }
-.form-status--mailto {
-  color: var(--muted);
+.form-status--inactive {
+  color: var(--gold-text);
 }
 
 @media (max-width: 560px) {
