@@ -1,8 +1,8 @@
 /// <reference types="vite/client" />
 
 interface ImportMetaEnv {
-  /** ID del formulario de Formspree (ej. "xyzabcd"). Si no existe, el formulario abre el correo. */
-  readonly VITE_FORMSPREE_ID?: string;
+  /** Opcional: otro endpoint para el formulario. Por defecto FormSubmit con tu correo. */
+  readonly VITE_CONTACT_ENDPOINT?: string;
 }
 
 interface ImportMeta {

@@ -277,7 +277,7 @@ const es = {
     sending: 'ENVIANDO…',
     ok: 'Mensaje enviado. Te responderé pronto.',
     error: 'No se pudo enviar. Escríbeme directamente a mi correo.',
-    mailtoNote: 'Se abrirá tu aplicación de correo para enviar el mensaje.',
+    inactive: 'El buzón aún no está activado. Escríbeme directamente a mi correo.',
   },
   footer: {
     tagline: 'Construyendo productos de IA con impacto real desde Lima, Perú.',
@@ -505,7 +505,7 @@ const en: Content = {
     sending: 'SENDING…',
     ok: "Message sent. I'll get back to you soon.",
     error: "Couldn't send it. Please write to my email directly.",
-    mailtoNote: 'Your email app will open to send the message.',
+    inactive: 'The inbox is not activated yet. Please write to my email directly.',
   },
   footer: {
     tagline: 'Building AI products with real impact from Lima, Peru.',
